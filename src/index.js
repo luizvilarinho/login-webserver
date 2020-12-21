@@ -83,7 +83,7 @@ app.post("/user/login", (request, response) =>{
                     expiresIn:"30d"
                 });
                 //request.cookies.clear();
-                response.cookie('eco-user-token', token, { maxAge: 900000, httpOnly: true, path: 'https://economia-webserver.herokuapp.com' });
+                response.cookie('eco-user-token', token, { maxAge: 900000, httpOnly: true, path: 'https://www.luizvilarinho.com.br' });
                // console.log("req.cookies", request.cookies)
                 //console.log("req.signedCookies", request.signedCookies)
                 response.clearCookie("novoCookie", {path:'/'})
