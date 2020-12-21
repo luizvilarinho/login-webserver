@@ -82,11 +82,13 @@ app.post("/user/login", (request, response) =>{
                 const token = jwt.sign({id:user[0].id}, "mysecret", {
                     expiresIn:"30d"
                 });
-
-                response.cookie('eco-user-token', token, { maxAge: 900000, httpOnly: true });
+                //request.cookies.clear();
+                response.cookie('eco-user-token', token, { maxAge: 900000, httpOnly: true, path: 'https://economia-webserver.herokuapp.com' });
                // console.log("req.cookies", request.cookies)
                 //console.log("req.signedCookies", request.signedCookies)
-
+                response.clearCookie("novoCookie", {path:'/'})
+                response.clearCookie("novoKookie", {path:'/'})
+                response.clearCookie("token:", {path:'/'})
                 //console.log("response.cookies", response.cookies);
 
                 objRespopnse = {
@@ -98,8 +100,10 @@ app.post("/user/login", (request, response) =>{
                     user_id:user[0].id,
                     auth:true,
                     token:token,
-                    message:"usuário encontrado"
+                    message:"usuário encontrado",
+                    cookies:request.cookies
                 }
+
 
                 connection.release();
 
