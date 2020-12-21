@@ -49,9 +49,9 @@ function auth(req, res, next){
         res.status(400).send("Invalid token");
     }
 }
+
 app.post("/user/login", (request, response) =>{
     const { email, password } = request.body;
-    console.log(email, password);
     var objRespopnse = {};
 
     let findUserQuery = `SELECT * FROM users WHERE email = '${email}'`;
@@ -63,7 +63,6 @@ app.post("/user/login", (request, response) =>{
             if(err) throw err;
 
             if(user.length == 0){
-                console.log("Usuário não encontrado");
     
                 objRespopnse = {
                     success : false,
@@ -84,7 +83,11 @@ app.post("/user/login", (request, response) =>{
                     expiresIn:"30d"
                 });
 
-                console.log("TOKEN", token);
+                response.cookie('eco-user-token', token, { maxAge: 900000, httpOnly: true });
+               // console.log("req.cookies", request.cookies)
+                //console.log("req.signedCookies", request.signedCookies)
+
+                //console.log("response.cookies", response.cookies);
 
                 objRespopnse = {
                     success : true,
@@ -109,7 +112,6 @@ app.post("/user/login", (request, response) =>{
                 //console.log("request.cookies", request.cookies);
                 //console.log("request.signedCookies", request.signedCookies);
                 /**Cooquie test */
-                console.log(objRespopnse)
                 response.json(objRespopnse) 
             }else{
                 objRespopnse = {
@@ -138,7 +140,7 @@ app.get("/users", (request, response)=>{
                  if (error) throw error;
                  
                  responseObj = result;
-                 console.log(result);
+
                  
                  //db.destroy();
                  connection.release();
@@ -194,7 +196,6 @@ app.post("/user/create", (request, response)=>{
         connection.query(checkEmailQuery, (error, result)=>{
             if (error) throw error;
 
-            console.log("RESULT", result);
 
             if(result.length > 0){
                 responseObj.success = false;
